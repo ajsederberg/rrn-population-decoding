@@ -35,7 +35,7 @@ amp_mat = repmat(amp_orig(:), 1, length(freq_orig));
 freq_mat = permute(repmat(freq_orig(:), 1, length(amp_orig)), [2 1]);
 aae_mat = evoke_fr;
 
-evokefr_fun = @(ff, aa) interp2(freq_mat, amp_mat, aae_mat, ff, aa, 'cubic');
+evokefr_fun = @(ff, aa) interp2(freq_mat, amp_mat, aae_mat, ff, aa, 'spline');
 %%
 
 [freq_x, amp_y] = meshgrid(freq_orig(1):.001:freq_orig(end), amp_orig(1):.01:amp_orig(end));
@@ -163,7 +163,8 @@ ylabel('amplitude at freq1')
 ylim(amp_y([1 end]))
 title('look-up values of amplitude of input w/ frequency freq1')
 
-print(gcf, '-dpdf', [network_param.plotdir 'amplitude_lookup_' sim_name])
+% print(gcf, '-dpdf', [network_param.plotdir 'amplitude_lookup_' sim_name])
+exportgraphics(gcf, [network_param.plotdir 'amplitude_lookup_' sim_name '.pdf'])
 
 
 % save in the matsfile dir 

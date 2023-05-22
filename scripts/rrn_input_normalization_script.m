@@ -109,7 +109,7 @@ y_range = min(1, y_range);
 y_range = max(0, y_range);
 % evoke_fr = zeros(num_stims, num_neurons);
 t_vals = proc_simdata.peri_stim_time;
-makeMyFigure(10*nC, 10*nR);
+makeMyFigure(7*nC, 7*nR);
 for i_sp = 1:nC*nR
     j_freq = mod(i_sp-1, nC) + 1;
     i_amp = floor((i_sp-1)/nC) + 1;
@@ -124,7 +124,7 @@ for i_sp = 1:nC*nR
         ['freq = ' num2str(input_params.freq_range(j_freq))]})
     ylim(y_range)
 end
-print(gcf, '-dpdf', [network_param.plotdir 'overview_' sim_name]);
+exportgraphics(gcf, [network_param.plotdir 'overview_' sim_name '.pdf'])
 
 %% spline the average network firing rate surface to find matching freq/amp inputs
 splineParamSweepSim(proc_simdata, input_params, network_param, sim_name);

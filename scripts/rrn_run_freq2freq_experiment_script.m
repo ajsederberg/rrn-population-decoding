@@ -102,8 +102,8 @@ for i_sp = 1:nC*nR
         ['freq = ' num2str(input_params.freq_range(j_freq))]})
     ylim(y_range)
 end
-print(gcf, '-dpdf', [network_param.plotdir 'overview_' sim_name]);
-
+% print(gcf, '-dpdf', [network_param.plotdir 'overview_' sim_name]);
+exportgraphics(gcf, [network_param.plotdir 'overview_' sim_name '.pdf']);
 % %% uncomment to debug the stimulus generation. 
 % figure();
 % for i_sp = 1:num_stims

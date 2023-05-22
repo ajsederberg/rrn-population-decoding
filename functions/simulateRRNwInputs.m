@@ -81,12 +81,18 @@ num_intervals = 1 + length(stim_param.trial_start_times);
 t_out = cell(num_intervals, 1);
 x_out = cell(num_intervals, 1);
 
+% because the first interval is the burn-in period, i_int = 2
+% corresponds to trial_start_times(1). Note trial_start_times is
+% length(num_intervals-1), by construction)
+interval_start_times = [0 stim_param.trial_start_times];
+stim_trial_length = stim_param.trial_length;
 if ~contains(param.network_tag, 'spEnoise')
     % integrate over the stimulus periods
-    t_start = 0;
+%     t_start = 0;
 
-    for i_int = 1:num_intervals
-        t_interval = t_start + stim_param.trial_length*[-0.1 1.2];
+    parfor i_int = 1:num_intervals
+        t_start = interval_start_times(i_int);
+        t_interval = t_start + stim_trial_length*[-0.1 1.2];
         [t_out{i_int}, x_out{i_int}] = ode45(ode_fun, t_interval, x0, options);
 
     %     dt = 0.01;
@@ -96,13 +102,13 @@ if ~contains(param.network_tag, 'spEnoise')
         % reset the initial conditions
     %     x0 = x_out{i_int}(end, :)' + x0_sigma*randn(size(x0));
 
-        if i_int < num_intervals
-            % because the first interval is the burn-in period, i_int = 2
-            % corresponds to trial_start_times(1). No need to reset t_start on
-            % the last trial (Also, trial_start_times is only
-            % length(num_intervals-1), by construction)
-            t_start = stim_param.trial_start_times(i_int);
-        end
+%         if i_int < num_intervals
+%             % because the first interval is the burn-in period, i_int = 2
+%             % corresponds to trial_start_times(1). No need to reset t_start on
+%             % the last trial (Also, trial_start_times is only
+%             % length(num_intervals-1), by construction)
+%             t_start = stim_param.trial_start_times(i_int);
+%         end
 
     end
 
